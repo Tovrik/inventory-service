@@ -1,0 +1,229 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  """Identifier for the book record"""
+  id: Int!
+
+  """Title of the book (ex. Harry Potter And The Sorcerer's Stone)"""
+  title: String!
+
+  """
+  The ISBN number of the book. This should be unique for all books (ex. 37463567283)
+  """
+  isbn: String!
+
+  """The category of the book (ex. fantasy)"""
+  category: String!
+
+  """The count of books in the inventory (ex. 7)"""
+  inventory: Int!
+
+  """The price of the book (ex. 12.99)"""
+  price: Float!
+
+  """
+  Temporary price that overrides the normal price in cases of a sale or high demand (ex. 9.99))
+  """
+  priceOverride: Float
+
+  """The date the book was released (ex. 2020-01-01)"""
+  releaseDate: DateTime!
+
+  """Optional internal notes on the book"""
+  notes: String
+
+  """The authors of the book"""
+  authors: [Author!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Author {
+  """Identifier for the author record"""
+  id: Int!
+
+  """First name of the author (ex. John)"""
+  firstName: String!
+
+  """Last name of the author (ex. Doe)"""
+  lastName: String!
+
+  """The books written by this author"""
+  books: [Book!]!
+}
+
+type Order {
+  """Identifier of the book being purchased"""
+  bookId: Int!
+
+  """Purchase or Reserve"""
+  type: OrderType!
+
+  """Quantity of this book to be ordered"""
+  quantity: Int!
+
+  """Acknowledgement that that the order was filled"""
+  fulfilled: Boolean!
+}
+
+enum OrderType {
+  RESERVE
+  PURCHASE
+}
+
+type Query {
+  searchBooks(
+    """Identifier for the book record"""
+    id: Int
+
+    """Title of the book (ex. Harry Potter And The Sorcerer's Stone)"""
+    title: String
+
+    """
+    The ISBN number of the book. This should be unique for all books (ex. 37463567283)
+    """
+    isbn: String
+
+    """The category of the book (ex. fantasy)"""
+    category: String
+
+    """The count of books in the inventory (ex. 7)"""
+    inventory: Int
+
+    """The price of the book (ex. 12.99)"""
+    price: Float
+
+    """
+    Temporary price that overrides the normal price in cases of a sale or high demand (ex. 9.99))
+    """
+    priceOverride: Float
+
+    """The date the book was released (ex. 2020-01-01)"""
+    releaseDate: DateTime
+
+    """Optional internal notes on the book"""
+    notes: String
+
+    """How far into the result set to start taking results"""
+    skip: Int = 0
+
+    """The size of the page"""
+    take: Int = 20
+  ): [Book!]!
+  searchAuthors(
+    """Identifier for the author record"""
+    id: Int
+
+    """First name of the author (ex. John)"""
+    firstName: String
+
+    """Last name of the author (ex. Doe)"""
+    lastName: String
+
+    """How far into the result set to start taking results"""
+    skip: Int = 0
+
+    """The size of the page"""
+    take: Int = 20
+  ): [Author!]!
+}
+
+type Mutation {
+  createBook(createBookInput: CreateBookInput!): Book!
+  updateBook(updateBookInput: UpdateBookInput!): Book!
+  removeBook(id: Int!): Book!
+  createAuthor(createAuthorInput: CreateAuthorInput!): Author!
+  createAuthors(createAuthorInputs: [CreateAuthorInput!]!): [Author!]!
+  processOrder(processOrderInput: ProcessOrderInput!): Order!
+  processOrders(processOrderInput: [ProcessOrderInput!]!): [Order!]!
+}
+
+input CreateBookInput {
+  """Title of the book (ex. Harry Potter And The Sorcerer's Stone)"""
+  title: String!
+
+  """
+  The ISBN number of the book. This should be unique for all books (ex. 37463567283)
+  """
+  isbn: String!
+
+  """The category of the book (ex. fantasy)"""
+  category: String!
+
+  """The count of books in the inventory (ex. 7)"""
+  inventory: Int!
+
+  """The price of the book (ex. 12.99)"""
+  price: Float!
+
+  """
+  Temporary price that overrides the normal price in cases of a sale or high demand (ex. 9.99))
+  """
+  priceOverride: Float
+
+  """The date the book was released (ex. 2020-01-01)"""
+  releaseDate: DateTime!
+
+  """Optional internal notes on the book"""
+  notes: String
+
+  """The authors id(s) who wrote the book"""
+  authorIds: [Int!]!
+}
+
+input UpdateBookInput {
+  """Title of the book (ex. Harry Potter And The Sorcerer's Stone)"""
+  title: String
+
+  """
+  The ISBN number of the book. This should be unique for all books (ex. 37463567283)
+  """
+  isbn: String
+
+  """The category of the book (ex. fantasy)"""
+  category: String
+
+  """The count of books in the inventory (ex. 7)"""
+  inventory: Int
+
+  """The price of the book (ex. 12.99)"""
+  price: Float
+
+  """
+  Temporary price that overrides the normal price in cases of a sale or high demand (ex. 9.99))
+  """
+  priceOverride: Float
+
+  """The date the book was released (ex. 2020-01-01)"""
+  releaseDate: DateTime
+
+  """Optional internal notes on the book"""
+  notes: String
+
+  """Identifier for the book record"""
+  id: Int!
+}
+
+input CreateAuthorInput {
+  """First name of the author (ex. John)"""
+  firstName: String!
+
+  """Last name of the author (ex. Doe)"""
+  lastName: String!
+}
+
+input ProcessOrderInput {
+  """Identifier of the book being purchased"""
+  bookId: Int!
+
+  """Purchase or Reserve"""
+  type: OrderType!
+
+  """Quantity of this book to be ordered"""
+  quantity: Int!
+}

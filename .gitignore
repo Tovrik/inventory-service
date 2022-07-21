@@ -1,0 +1,32 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.out
+*.pid
+*.swp
+.#*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Ignore built ts files
+dist/**/*
+
+# Testing
+coverage/**/*
+test_results/**/*
+junit.xml
+
+node_modules
+
+# API keys and secrets
+*.env
+.npmrc
+ssl/*.*
+
+# Editors
+.idea/
+**/*.iml
+.vscode

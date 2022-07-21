@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  inventory-service:
+    build: .
+    # same as running docker run -t
+    tty: true
+    ports:
+     - 3000:3000
+    environment:
+      - DB_HOST=mysql-inventory
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=inventory
+    healthcheck:
+      disable: true
+    # expresses dependency on mysql service causing `docker-compose up` to create/start the mysql service first
+    depends_on:
+      - mysql
+    # adds the node service to the backend network
+    networks:
+      - backend
+  mysql-inventory:
+    # the remote image for the version of MySQL that we want
+    image: mysql:8
+    # always restart whenever it goes down, error or not
+    restart: "unless-stopped"
+    # map port 3306 on the host to 3306 on the mysql container
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    # exposes environment variables to the container
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./baseline.sql:/docker-entrypoint-initdb.d/baseline.sql
+
+    # adds the mysql service to the backend network
+    networks:
+      - backend
+
+# define the network(s)
+networks:
+  backend:
+    driver: bridge
