@@ -25,14 +25,14 @@ export class OrdersService {
 
   private async orderBook(order: Order): Promise<Book> {
     let book = await this.booksService.findById(order.bookId);
+    const proposedQuantity = book.inventory - order.quantity;
     if (
-      book.inventory - order.quantity > 0 ||
+        proposedQuantity > 0 ||
       (order.type === OrderType.RESERVE && book.releaseDate > new Date())
     ) {
-      book.inventory - order.quantity;
       await this.booksService.update(book.id, {
         id: book.id,
-        inventory: book.inventory - order.quantity,
+        inventory: proposedQuantity
       });
     } else {
       throw new Error("Book not available");

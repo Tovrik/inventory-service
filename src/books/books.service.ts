@@ -44,7 +44,7 @@ export class BooksService {
   async search(searchBookArgs: SearchBookArgs): Promise<Book[]> {
     let query = this.BookRepository.createQueryBuilder("b")
       .select()
-      .innerJoin("authors_books", "ab", "b.id = ab.author_id")
+      .innerJoin("authors_books", "ab", "b.id = ab.book_id")
       .innerJoin("authors", "a", "ab.author_id = a.id");
 
     if (searchBookArgs.id) {
